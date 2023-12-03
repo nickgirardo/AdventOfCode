@@ -3,7 +3,6 @@ module PartTwo (partTwo) where
 
 import Parser (Game (..), parseGame)
 
-import Data.Bifunctor (second)
 import Text.Parsec (parse)
 
 partTwo :: String -> String
