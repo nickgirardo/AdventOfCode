@@ -9,5 +9,5 @@ import System.Environment (getArgs)
 main :: IO ()
 main = getArgs >>= go . listToMaybe
   where
-    go (Just "--partOne") = readFile "input.txt" >>= print . partOne
+    go (Just "--part-one") = readFile "input.txt" >>= print . partOne
     go _ = readFile "input.txt" >>= print . partTwo
