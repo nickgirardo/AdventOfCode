@@ -28,6 +28,8 @@ partOne = print . processFile
         processFile = sum . map processLine . lines
         processLine :: String -> Int
         processLine = uncurry joinDigits . (&&&) head last . map digitToInt . filter isDigit
+        _processLine' :: String -> Int
+        _processLine' = read . uncurry (:) . (&&&) head ((: []) . last) . filter isDigit
 
 partTwo :: String -> IO ()
 partTwo = print . processFile
