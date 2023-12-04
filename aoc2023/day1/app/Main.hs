@@ -3,8 +3,8 @@ module Main where
 import Data.Char (isDigit, digitToInt, toLower)
 import Control.Arrow ((&&&))
 import System.Environment (getArgs)
-import Data.Maybe (listToMaybe, catMaybes, mapMaybe)
-import Data.List (tails)
+import Data.Maybe (listToMaybe, mapMaybe)
+import Data.List (tails, isPrefixOf)
 
 main :: IO ()
 main = getArgs >>= \arg -> if listToMaybe arg == Just "--part-one" then go partOne else go partTwo
@@ -15,11 +15,6 @@ main = getArgs >>= \arg -> if listToMaybe arg == Just "--part-one" then go partO
 -- NOTE only makes sense if the input Ints are single digits
 joinDigits :: Int -> Int -> Int
 joinDigits a b = a*10 + b
-
-startsWith :: Eq a => [a] -> [a] -> Bool
-startsWith _ [] = True
-startsWith [] _ = False
-startsWith (x:xs) (y:ys) = x == y && startsWith xs ys
 
 partOne :: String -> IO ()
 partOne = print . processFile
@@ -41,7 +36,7 @@ processLine :: String -> Int
 processLine = uncurry joinDigits . (&&&) head last . mapMaybe valueOfTail . tails . map toLower
 
 valueOfTail :: String -> Maybe Int
-valueOfTail = magicalLookup startsWith values
+valueOfTail = magicalLookup (flip isPrefixOf) values
   where
         magicalLookup :: (a -> b -> Bool) -> [(b,c)] -> a -> Maybe c
         magicalLookup _f [] _key = Nothing
