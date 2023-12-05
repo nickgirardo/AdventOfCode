@@ -57,6 +57,7 @@ library
   exposed-modules:
       PartOne,
       PartTwo,
+      PartTwoOld,
       Parser
   hs-source-dirs:
       src
