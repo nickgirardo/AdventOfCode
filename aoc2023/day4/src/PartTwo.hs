@@ -21,9 +21,6 @@ scoreCards baseScores scored cardId | otherwise = cardScore + scoreCards baseSco
   where
     cardScore = scoreCard baseScores scored cardId
 
--- NOTE the recursion here leads to recomputing values a ton
--- The performance really isn't great but it's not *too* bad
--- I might come back and try caching the intermediate results for fun
 scoreCard :: [(Int, Int)] -> [(Int, Int)] -> Int -> Int
 scoreCard baseScores scoredCards cardId =
     case lookup cardId baseScores of
