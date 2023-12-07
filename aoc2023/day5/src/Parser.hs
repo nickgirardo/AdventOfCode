@@ -1,5 +1,5 @@
 -- |
-module Parser (parseAlmanac) where
+module Parser (parseBasicAlmanac, parseFancyAlmanac) where
 
 import Common (Map, MapEntry)
 
@@ -18,11 +18,24 @@ parseDashedWord = many1 $ letter <|> char '-'
 parseNumbers :: Parser [Int]
 parseNumbers = manyTill (parseNumber <* optional (char ' ')) newline
 
+parseNumberPairs :: Parser [(Int, Int)]
+parseNumberPairs = manyTill (p <* optional (char ' ')) newline
+  where
+    p = liftA2 (,) parseNumber (char ' ' *> parseNumber)
+
 parseNumber :: Parser Int
 parseNumber = read <$> many1 digit
 
-parseAlmanac :: Parser ([Int], [Map])
-parseAlmanac = liftA2 (,) parseSeeds parseMaps
+-- | Parse an almanac where the seed line represent (startId, range) pairs
+parseFancyAlmanac :: Parser ([(Int, Int)], [Map])
+parseFancyAlmanac = liftA2 (,) parseSeedPairs parseMaps
+
+-- | Parse an almanac where the seed line represents a simple list of seed ids
+parseBasicAlmanac :: Parser ([Int], [Map])
+parseBasicAlmanac = liftA2 (,) parseSeeds parseMaps
+
+parseSeedPairs :: Parser [(Int, Int)]
+parseSeedPairs = string "seeds: " *> parseNumberPairs <* newline
 
 parseSeeds :: Parser [Int]
 parseSeeds = string "seeds: " *> parseNumbers <* newline

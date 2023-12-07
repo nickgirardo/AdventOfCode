@@ -2,13 +2,13 @@
 module PartOne (partOne) where
 
 import Common (Map)
-import Parser (parseAlmanac)
+import Parser (parseBasicAlmanac)
 
 import Data.Foldable (find)
 import Text.Parsec (parse)
 
 partOne :: String -> String
-partOne = either show getBest . parse parseAlmanac ""
+partOne = either show getBest . parse parseBasicAlmanac ""
   where
     getBest = show . minimum . uncurry destinations
     destinations seeds maps = flip (foldl evalMap) maps <$> seeds
